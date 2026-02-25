@@ -8,6 +8,7 @@ namespace HomeWork2.Repository
         List<Product> GetAll();
         public Product? TryGetById(Guid productId);
         void Add(string name, decimal cost, string description);
+        void Update(Guid id, ProductDTO product);
 
     }
 }

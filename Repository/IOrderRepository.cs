@@ -9,5 +9,6 @@ namespace HomeWork2.Repository
         List<Order> GetAll();
         List<Order> GetByID(string userId);
         void Delete(string UdserId);
+        void Update(OrderDTO order);
     }
 }

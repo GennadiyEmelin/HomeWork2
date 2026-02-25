@@ -59,7 +59,7 @@ namespace HomeWork2.Controllers
         [HttpPost("DeleteOrder")]
         public IActionResult Delete(string userId)
         {
-            if(_ordersRepository.GetByID(userId) == null) 
+            if (_ordersRepository.GetByID(userId) == null)
             {
                 return BadRequest();
             }
@@ -67,6 +67,13 @@ namespace HomeWork2.Controllers
             {
                 _ordersRepository.Delete(userId);
             }
+            return Ok();
+        }
+
+        [HttpPut("UpdateOrder")]
+        public IActionResult Update(OrderDTO dto)
+        {
+            _ordersRepository.Update(dto);
             return Ok();
         }
     }

@@ -36,9 +36,16 @@ namespace HomeWork2.Repository
             _products.Add(product);
         }
 
-        public void Update()
+        public void Update(Guid id, ProductDTO productDto)
         {
+            var product = _products.FirstOrDefault(p => p.Id == id);
 
+            if (product == null)
+                return;
+
+            product.Name = productDto.Name;
+            product.Cost = productDto.Cost;
+            product.Description = productDto.Description;
         }
 
         public void Delete(Guid id) 

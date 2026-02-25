@@ -62,5 +62,12 @@ namespace WebApplication2.Controllers
             }
 
         }
+
+        [HttpPut("Update")]
+        public IActionResult Update(Guid id, ProductDTO product)
+        {
+            _productsRepository.Update(id, product);
+            return Ok();
+        }
     }
 }

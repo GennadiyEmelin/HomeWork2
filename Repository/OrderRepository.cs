@@ -42,12 +42,19 @@ namespace HomeWork2.Repository
         public void Delete(string userId)
         {
             var or = _orders.FirstOrDefault(i => i.UserId == userId);
+            if (or == null)
+                return;
             or.Status = Enums.Status.Delete;
         }
 
-        public void Update()
+        public void Update(OrderDTO dto)
         {
+            var order = _orders.FirstOrDefault(o => o.UserId == dto.UserId);
 
+            if (order == null)
+                return;
+
+            order.Address = dto.Address;
         }
     }
 }

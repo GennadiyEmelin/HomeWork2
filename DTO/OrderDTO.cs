@@ -1,4 +1,5 @@
-﻿using HomeWork2.Models;
+﻿using HomeWork2.Enums;
+using HomeWork2.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace HomeWork2.DTO

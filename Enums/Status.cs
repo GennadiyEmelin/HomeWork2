@@ -2,9 +2,9 @@
 {
     public enum Status
     {
-        Create,
-        Confirmed,
-        Delete,
-        Delivered
+        Create = 0,
+        Confirmed = 5,
+        Delete = 10,
+        Delivered = 15
     }
 }
