@@ -6,10 +6,19 @@ namespace HomeWork2.Repository
     public class OrderRepository: IOrderRepository
     {
         private readonly List<Order> _orders = [];
-        private CartsRepository _cartsRepository;
+        private readonly ICartsRepository _cartsRepository;
+        public OrderRepository(ICartsRepository cartsRepository)
+        {
+            _cartsRepository = cartsRepository;
+        }
+
         public void Add(OrderDTO order)
         {
             var cart = _cartsRepository.TryGetByUserId(order.UserId);
+            if (cart == null) 
+            {
+                return;
+            }
             var orders = new Order
             {
                 Id = Guid.NewGuid(),

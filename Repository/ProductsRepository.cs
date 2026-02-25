@@ -51,6 +51,8 @@ namespace HomeWork2.Repository
         public void Delete(Guid id) 
         {
             var product = _products.FirstOrDefault(product => product.Id == id);
+            if (product == null)
+                return;
             product.IsDelete = true;
         }
     }

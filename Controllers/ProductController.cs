@@ -69,5 +69,12 @@ namespace WebApplication2.Controllers
             _productsRepository.Update(id, product);
             return Ok();
         }
+
+        [HttpDelete("Delete")]
+        public IActionResult Delete(Guid id)
+        {
+            _productsRepository.Delete(id);
+            return Ok();
+        }
     }
 }

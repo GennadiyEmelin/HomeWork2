@@ -24,8 +24,8 @@ namespace HomeWork2.Controllers
         [HttpGet("GetAll")]
         public IActionResult Get() 
         {
-            _ordersRepository.GetAll();
-            return Ok();
+            var orders = _ordersRepository.GetAll();
+            return Ok(orders);
         }
 
         [HttpPost("CreateFromCart")]
@@ -56,7 +56,7 @@ namespace HomeWork2.Controllers
             return order;
         }
 
-        [HttpPost("DeleteOrder")]
+        [HttpDelete("DeleteOrder")]
         public IActionResult Delete(string userId)
         {
             if (_ordersRepository.GetByID(userId) == null)

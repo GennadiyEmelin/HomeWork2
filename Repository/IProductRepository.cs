@@ -9,6 +9,7 @@ namespace HomeWork2.Repository
         public Product? TryGetById(Guid productId);
         void Add(string name, decimal cost, string description);
         void Update(Guid id, ProductDTO product);
+        void Delete(Guid id);
 
     }
 }

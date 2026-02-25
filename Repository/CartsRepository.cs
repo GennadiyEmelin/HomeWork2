@@ -14,7 +14,7 @@ namespace HomeWork2.Repository
         {
             var existingCart = TryGetByUserId(userId);
 
-            if (existingCart == null)
+            if (existingCart == null & product.IsDelete == false)
             {
                 existingCart = new Cart()
                 {
@@ -31,6 +31,10 @@ namespace HomeWork2.Repository
             }
                 };
                 _carts.Add(existingCart);
+            }
+            else if(existingCart == null & product.IsDelete == true)
+            {
+                return;
             }
             else
             {
