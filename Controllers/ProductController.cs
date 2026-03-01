@@ -66,6 +66,19 @@ namespace WebApplication2.Controllers
         [HttpPut("Update")]
         public IActionResult Update(Guid id, ProductDTO product)
         {
+            var prod = _productsRepository.TryGetById(id);
+            if (prod == null)
+            {
+                return BadRequest();
+            }
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState
+                    .SelectMany(x => x.Value.Errors.Select(error => error.ErrorMessage))
+                    .ToList();
+
+                return BadRequest($"Ошибки: {string.Join(", ", errors)}");
+            }
             _productsRepository.Update(id, product);
             return Ok();
         }
@@ -73,8 +86,14 @@ namespace WebApplication2.Controllers
         [HttpDelete("Delete")]
         public IActionResult Delete(Guid id)
         {
+            var product = _productsRepository.TryGetById(id);
+            if (product == null)
+            {
+                return BadRequest();
+            }
             _productsRepository.Delete(id);
             return Ok();
+
         }
     }
 }

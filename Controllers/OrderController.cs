@@ -53,6 +53,10 @@ namespace HomeWork2.Controllers
         public ActionResult<List<Order>> GetById(string UserId)
         {
             var order = _ordersRepository.GetByID(UserId);
+            if(order == null)
+            {
+                return BadRequest();
+            }
             return order;
         }
 
@@ -73,8 +77,22 @@ namespace HomeWork2.Controllers
         [HttpPut("UpdateOrder")]
         public IActionResult Update(OrderDTO dto)
         {
-            _ordersRepository.Update(dto);
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState
+                    .SelectMany(x => x.Value.Errors.Select(error => error.ErrorMessage))
+                    .ToList();
+                return BadRequest($"Ошибки: {string.Join(", ", errors)}");
+            }
+            try
+            {
+                _ordersRepository.Update(dto);
+                return Ok();
+            }
+            catch
+            {
+                return StatusCode(500, "Ошибка сервера при добавлении");
+            }
         }
     }
 }
