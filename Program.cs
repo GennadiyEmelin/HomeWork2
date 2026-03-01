@@ -1,5 +1,9 @@
 
+using HomeWork2.Data;
 using HomeWork2.Repository;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System;
 
 namespace HomeWork2
 {
@@ -15,6 +19,12 @@ namespace HomeWork2
             builder.Services.AddSingleton<IProductRepository, ProductsRepository>();
             builder.Services.AddSingleton<ICartsRepository, CartsRepository>();
             builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
+
+            builder.Services.AddDbContext<AppDbContext>(options =>
+            {
+                options.UseSqlite(
+                    builder.Configuration.GetConnectionString("SqLiteConnection"));
+            });
 
             var app = builder.Build();
 

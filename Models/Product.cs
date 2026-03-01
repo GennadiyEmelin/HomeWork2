@@ -10,12 +10,17 @@ namespace HomeWork2.Models
         public string? Description { get; set; }
         public bool IsDelete { get; set; } = false;
 
+        public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
+
         public Product(string name, decimal cost, string description)
         {
-            Id = Guid.NewGuid();
             Name = name;
             Cost = cost;
             Description = description;
+        }
+        public Product()
+        {
+            
         }
     }
 }
