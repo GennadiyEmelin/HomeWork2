@@ -16,9 +16,9 @@ namespace HomeWork2
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddSingleton<IProductRepository, ProductsRepository>();
-            builder.Services.AddSingleton<ICartsRepository, CartsRepository>();
-            builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
+            builder.Services.AddScoped<IProductRepository, ProductsRepository>();
+            builder.Services.AddScoped<ICartsRepository, CartsRepository>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
             builder.Services.AddDbContext<AppDbContext>(options =>
             {

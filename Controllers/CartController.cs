@@ -36,7 +36,7 @@ namespace HomeWork2.Controllers
 
             if (product != null)
             {
-                _cartsRepository.Add(product, Constants.UserId);
+                //_cartsRepository.Add(product, Constants.UserId);
             }
             return "Продукт добавлен";
         }

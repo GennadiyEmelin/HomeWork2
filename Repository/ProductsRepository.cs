@@ -2,43 +2,39 @@
 using HomeWork2.DTO;
 using System.Web.Mvc;
 using System.Xml.Linq;
+using HomeWork2.Data;
+using Microsoft.EntityFrameworkCore;
+using HomeWork2.DTO.Product;
+using HomeWork2.Mappers;
 namespace HomeWork2.Repository
 {
     public class ProductsRepository: IProductRepository
     {
-        private int _instanceCounter = 0;
-
-        private readonly List<Product> _products;
-
-        public ProductsRepository()
+        
+        private readonly AppDbContext _appDbContext;
+        public ProductsRepository(AppDbContext appDbContext)
         {
-            _products =
-            [
-               new Product ("Товар 1", 129.99m, "Описание 1"),
-               new Product ("Товар 2", 129.99m, "Описание 2"),
-               new Product ("Товар 3", 129.99m, "Описание 3"),
-               new Product ("Товар 4", 129.99m, "Описание 4"),
-               new Product ("Товар 5", 129.99m, "Описание 5"),
-            ];
+            _appDbContext = appDbContext;
         }
+        public List<Product> GetAll() => _appDbContext.Products.Where(p=>p.IsDelete == false).AsNoTracking().ToList();
 
-        public List<Product> GetAll() => _products;
-
-        public Product? TryGetById(Guid productId)
+        public ProductResponseDto? TryGetById(Guid productId)
         {
-            return _products.FirstOrDefault(product => product.Id == productId);
+            var prod = _appDbContext.Products.AsNoTracking().FirstOrDefault(product => product.Id == productId && product.IsDelete == false);
+            return ProductMapper.ToProductResponseDto(prod);
         }
 
         public void Add(string name, decimal cost, string description)
         {
             var product = new Product ( name, cost, description);
 
-            _products.Add(product);
+            _appDbContext.Products.Add(product);
+            _appDbContext.SaveChanges();
         }
 
         public void Update(Guid id, ProductDTO productDto)
         {
-            var product = _products.FirstOrDefault(p => p.Id == id);
+            var product = _appDbContext.Products.FirstOrDefault(p => p.Id == id);
 
             if (product == null)
                 return;
@@ -46,14 +42,16 @@ namespace HomeWork2.Repository
             product.Name = productDto.Name;
             product.Cost = productDto.Cost;
             product.Description = productDto.Description;
+            _appDbContext.SaveChanges();
         }
 
         public void Delete(Guid id) 
         {
-            var product = _products.FirstOrDefault(product => product.Id == id);
+            var product = _appDbContext.Products.FirstOrDefault(product => product.Id == id);
             if (product == null)
                 return;
             product.IsDelete = true;
+            _appDbContext.SaveChanges();
         }
     }
 }

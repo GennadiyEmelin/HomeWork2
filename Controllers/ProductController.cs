@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using System.Xml.Linq;
+using HomeWork2.DTO.Product;
 
 namespace WebApplication2.Controllers
 {
@@ -26,12 +27,12 @@ namespace WebApplication2.Controllers
             return products;
         }
         [HttpGet("GetById")]
-        public Product GetById(Guid id)
+        public ProductResponseDto GetById(Guid id)
         {
             var product = _productsRepository.TryGetById(id);
             if (product == null)
             {
-                return new Product ( "не существует",  00.00m, "не существует" );
+                return new ProductResponseDto();
             }
             return product;
         }
