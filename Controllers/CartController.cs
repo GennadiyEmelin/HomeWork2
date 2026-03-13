@@ -32,11 +32,19 @@ namespace HomeWork2.Controllers
         [HttpPost("AddToCart")]
         public ActionResult<string> Add(Guid productId)
         {
-            var product = _productsRepository.TryGetById(productId);
+            var productDto = _productsRepository.TryGetById(productId);
 
-            if (product != null)
+            if (productDto != null)
             {
-                //_cartsRepository.Add(product, Constants.UserId);
+                var product = new Product
+                {
+                    Id = productDto.Id,
+                    Name = productDto.Name,
+                    Cost = productDto.Cost,
+                    Description = productDto.Description
+                };
+
+                _cartsRepository.Add(product, Constants.UserId);
             }
             return "Продукт добавлен";
         }

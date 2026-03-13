@@ -5,7 +5,7 @@ namespace HomeWork2.Mappers
 {
     public static class ProductMapper
     {
-        public static ProductResponseDto ToProductResponseDto(Product product)
+        public static ProductResponseDto? ToProductResponseDto(Product product)
         {
             return new ProductResponseDto
             {

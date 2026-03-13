@@ -16,17 +16,25 @@ namespace HomeWork2.Repository
         {
             _appDbContext = appDbContext;
         }
-        public List<Product> GetAll() => _appDbContext.Products.Where(p=>p.IsDelete == false).AsNoTracking().ToList();
-
+        public List<ProductResponseDto?> GetAll()
+        {
+            return _appDbContext.Products
+                .Where(p => p.IsDelete == false)
+                .AsNoTracking()
+                .Select(p => ProductMapper.ToProductResponseDto(p))
+                .ToList();
+        }
         public ProductResponseDto? TryGetById(Guid productId)
         {
-            var prod = _appDbContext.Products.AsNoTracking().FirstOrDefault(product => product.Id == productId && product.IsDelete == false);
+            var prod = _appDbContext.Products
+                .AsNoTracking()
+                .FirstOrDefault(product => product.Id == productId && product.IsDelete == false);
             return ProductMapper.ToProductResponseDto(prod);
         }
 
-        public void Add(string name, decimal cost, string description)
+        public void Add(ProductDTO productDto)
         {
-            var product = new Product ( name, cost, description);
+            var product = new Product(productDto.Name, productDto.Cost, productDto.Description);
 
             _appDbContext.Products.Add(product);
             _appDbContext.SaveChanges();

@@ -21,7 +21,7 @@ namespace WebApplication2.Controllers
         }
 
         [HttpGet("GetAll")]
-        public IEnumerable<Product> GetAll()
+        public ActionResult<List<ProductResponseDto>> GetAll()
         {
             var products = _productsRepository.GetAll();
             return products;
@@ -54,7 +54,7 @@ namespace WebApplication2.Controllers
             }
             try
             {
-                _productsRepository.Add(product.Name, product.Cost, product.Description);
+                _productsRepository.Add(product);
                 return Ok($"Товар '{product.Name}' успешно добавлен!");
             }
             catch
