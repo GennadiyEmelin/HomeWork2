@@ -24,12 +24,14 @@ namespace HomeWork2.Repository
                 .Select(p => ProductMapper.ToProductResponseDto(p))
                 .ToList();
         }
-        public ProductResponseDto? TryGetById(Guid productId)
+        public Product? TryGetById(Guid productId)
         {
             var prod = _appDbContext.Products
-                .AsNoTracking()
                 .FirstOrDefault(product => product.Id == productId && product.IsDelete == false);
-            return ProductMapper.ToProductResponseDto(prod);
+            if (prod == null)
+                throw new Exception("Продукта с таким Id не существует");
+
+            return prod;
         }
 
         public void Add(ProductDTO productDto)
@@ -55,9 +57,11 @@ namespace HomeWork2.Repository
 
         public void Delete(Guid id) 
         {
-            var product = _appDbContext.Products.FirstOrDefault(product => product.Id == id);
-            if (product == null)
-                return;
+            var product = TryGetById(id);
+
+            if (product.IsDelete)
+                throw new Exception($"Продукт с Id {id} уже удален");
+
             product.IsDelete = true;
             _appDbContext.SaveChanges();
         }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using System.Xml.Linq;
 using HomeWork2.DTO.Product;
+using HomeWork2.Mappers;
 
 namespace WebApplication2.Controllers
 {
@@ -27,14 +28,17 @@ namespace WebApplication2.Controllers
             return products;
         }
         [HttpGet("GetById")]
-        public ProductResponseDto GetById(Guid id)
+        public ActionResult<ProductResponseDto> GetById(Guid id)
         {
-            var product = _productsRepository.TryGetById(id);
-            if (product == null)
+            try
             {
-                return new ProductResponseDto();
+                var product = _productsRepository.TryGetById(id);
+                return Ok(ProductMapper.ToProductResponseDto(product));
             }
-            return product;
+            catch (Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpPost("Add")]
         public ActionResult<string> Add(ProductDTO product)
@@ -68,10 +72,6 @@ namespace WebApplication2.Controllers
         public IActionResult Update(Guid id, ProductDTO product)
         {
             var prod = _productsRepository.TryGetById(id);
-            if (prod == null)
-            {
-                return BadRequest();
-            }
             if (!ModelState.IsValid)
             {
                 var errors = ModelState
@@ -87,14 +87,15 @@ namespace WebApplication2.Controllers
         [HttpDelete("Delete")]
         public IActionResult Delete(Guid id)
         {
-            var product = _productsRepository.TryGetById(id);
-            if (product == null)
+            try
             {
-                return BadRequest();
+                _productsRepository.Delete(id);
+                return Ok($"Продукт {id} помечен как удаленный");
             }
-            _productsRepository.Delete(id);
-            return Ok();
-
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
